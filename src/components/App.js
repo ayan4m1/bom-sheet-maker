@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { Fragment, useCallback, useRef } from 'react';
 import { readFile } from 'utils';
 import { parse } from 'papaparse';
+import uniq from 'lodash.uniq';
 
 export default function App() {
   const fileRef = useRef();
@@ -33,27 +34,35 @@ export default function App() {
           skipEmptyLines: true
         });
 
-        setFieldValue(
-          'groups',
-          data.map((row) => ({
-            id: row.Id,
-            parts: row.Designator.split(','),
-            values: [row.Footprint, row.Designation]
-          }))
+        const groups = data.map((row) => ({
+          id: row.Id,
+          parts: row.Designator.split(','),
+          values: uniq([row.Footprint, row.Designation])
+        }));
+
+        groups.forEach((group) =>
+          group.parts.sort((a, b) => a.localeCompare(b))
         );
+
+        setFieldValue('groups', groups);
       } catch (error) {
         setFieldError('bomText', 'Invalid file selected.');
       }
     },
     [setFieldError, setFieldValue]
   );
+  const handleSortClick = useCallback(() => {
+    values.groups.sort((a, b) => a.parts[0].localeCompare(b.parts[0]));
+
+    setFieldValue('groups', values.groups);
+  }, [values, setFieldValue]);
 
   return (
     <Container fluid>
       <Row>
         <Col xs={3} className="d-print-none">
           <Form>
-            <Form.Group classNamy="my-2">
+            <Form.Group className="my-2">
               <Form.Label>Columns</Form.Label>
               <Form.Control
                 type="number"
@@ -77,6 +86,15 @@ export default function App() {
               <Fragment>
                 <Form.Group className="my-2 d-grid">
                   <Button
+                    variant="secondary"
+                    onClick={handleSortClick}
+                    size="lg"
+                  >
+                    Sort Designators
+                  </Button>
+                </Form.Group>
+                <Form.Group className="my-2 d-grid">
+                  <Button
                     variant="primary"
                     onClick={() => window.print()}
                     size="lg"
@@ -86,7 +104,7 @@ export default function App() {
                 </Form.Group>
                 <Form.Group className="my-2 d-grid">
                   <Button variant="danger" onClick={clearGroups} size="lg">
-                    Reset
+                    Clear
                   </Button>
                 </Form.Group>
               </Fragment>
