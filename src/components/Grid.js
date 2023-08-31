@@ -18,8 +18,7 @@ export default function Grid({ groups, columns }) {
             style={{
               minHeight: 200,
               border: '2px solid black',
-              marginTop: -2,
-              marginLeft: -2
+              pageBreakInside: 'avoid'
             }}
           >
             <h2 className="my-0">{group.parts.join(', ')}</h2>
