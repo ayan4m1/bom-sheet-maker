@@ -1,4 +1,13 @@
-
-
 @import "~bootstrap/scss/bootstrap";
 
+body {
+  background-color: $gray-800;
+  color: $white;
+}
+
+@media print {
+  body {
+    background-color: $white;
+    color: $black;
+  }
+}
