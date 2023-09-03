@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'react-bootstrap';
 
-export default function Grid({ groups, columns }) {
+export default function Grid({ groups, columns = 2, height = 200 }) {
   const colWidth = Math.ceil(12 / columns);
 
   if (groups.length === 0) {
@@ -16,7 +16,7 @@ export default function Grid({ groups, columns }) {
             xs={colWidth}
             key={group.id}
             style={{
-              minHeight: 200,
+              minHeight: height,
               border: '2px solid black',
               pageBreakInside: 'avoid'
             }}
@@ -38,5 +38,6 @@ export default function Grid({ groups, columns }) {
 
 Grid.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  columns: PropTypes.number.isRequired
+  columns: PropTypes.number,
+  height: PropTypes.number
 };
