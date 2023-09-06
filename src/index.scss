@@ -5,9 +5,18 @@ body {
   color: $white;
 }
 
+.bom-grid-cell {
+  border: 2px solid $gray-500;
+  page-break-inside: avoid;
+}
+
 @media print {
   body {
     background-color: $white;
     color: $black;
+  }
+
+  .bom-grid-cell {
+    border: 2px solid $black;
   }
 }

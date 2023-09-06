@@ -9,17 +9,14 @@ export default function Grid({ groups, columns = 2, height = 200 }) {
   }
 
   return (
-    <Container fluid>
+    <Container fluid className="bom-grid">
       <Row>
         {groups.map((group) => (
           <Col
             xs={colWidth}
             key={group.id}
-            style={{
-              minHeight: height,
-              border: '2px solid black',
-              pageBreakInside: 'avoid'
-            }}
+            className="bom-grid-cell"
+            style={{ minHeight: height }}
           >
             <h2 className="my-0">{group.parts.join(', ')}</h2>
             {group.values
